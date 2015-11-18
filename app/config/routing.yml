@@ -1,0 +1,4 @@
+app_ships:
+    resource: "@APPShipsBundle/Controller/"
+    type:     annotation
+    prefix:   /

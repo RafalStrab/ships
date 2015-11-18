@@ -1,0 +1,90 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	{% stylesheets
+		'@APPShipsBundle/Resources/public/css/style.css'
+		filter='cssrewrite' %}
+	    <link rel="stylesheet" href="{{ asset_url }}" />
+	{% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+	{% if not success %}
+		<div class="row">
+			<div class="col-md-4{% if debug is not defined or debug != 'show' %} col-md-offset-4{% endif %} error">{{ message }}</div>
+		</div>
+	{% endif %}
+		
+	<div class="row">
+		<div class="col-md-4{% if debug is not defined or debug != 'show' %} col-md-offset-4{% endif %}">
+			<table class="table table-bordered">
+				<thead>
+					<th></th>
+					<th>A</th>
+					<th>B</th>
+					<th>C</th>
+					<th>D</th>
+					<th>E</th>
+					<th>F</th>
+					<th>G</th>
+					<th>H</th>
+					<th>I</th>
+					<th>J</th>
+				</thead>
+				<tbody>
+					{% for row, cols in app.session.get('boardUser') %}
+					    <tr><td>{{ row + 1 }}</td>
+					    {% for cell, value in cols %}
+							<td>{{ value }}</td>
+						{% endfor %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="col-md-6">Shots total: {{ shotsTotal }}</div>
+			<div class="col-md-6">Hits left: {{ hitsLeft }}</div>
+			<div class="col-md-12">
+				<form id="form" action="{{ path('index', { 'debug':debug }) }}" method="post" class="form-inline">
+					<input autofocus required type="text" id="coord" name="coord" class="form-control" placeholder="Select e.g. A1">
+					<button type="submit" class="btn btn-info">Fire</button>
+				</form>
+			</div>
+		</div>
+		{% if debug == 'show' %}
+			<div class="col-md-4 col-md-offset-1">
+				<table class="table table-bordered">
+					<thead>
+						<th></th>
+						<th>A</th>
+						<th>B</th>
+						<th>C</th>
+						<th>D</th>
+						<th>E</th>
+						<th>F</th>
+						<th>G</th>
+						<th>H</th>
+						<th>I</th>
+						<th>J</th>
+					</thead>
+					<tbody>
+						{% for row, cols in app.session.get('boardRaw') %}
+						    <tr><td>{{ row + 1 }}</td>
+						    {% for cell, value in cols %}
+								<td>
+									{% if value|length > 3 %}
+										X
+									{% endif %}
+								</td>
+							{% endfor %}
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
